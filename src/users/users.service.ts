@@ -4,18 +4,31 @@ import { Repository } from 'typeorm';
 import { Users } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { User } from './user.model';
 
 @Injectable()
 export class UsersService {
+    private users: Users[];
   constructor(
-    @InjectRepository(Users)
-    private usersRepository: Repository<Users>
+    @InjectModel('User') 
+    private readonly userModel : Model<User>
 ) { }
 
-  createUser(createUserDto: CreateUserDto) {
-    return this.usersRepository.save(createUserDto);
+    
+ async createUser(name:string, lastname:string, email:string, password:string ) {
+    const newUser = new this.userModel({
+        name,
+        lastname,
+        email,
+        password,
+    });
+    const result = await newUser.save();
+    console.log(result);
+    return 'logseds';
   }
-
+/*
   findAll() {
     return this.usersRepository.find();
   }
@@ -30,6 +43,6 @@ export class UsersService {
 
   async remove(id: number) {
     await this.usersRepository.delete(id);
-  }
+  }*/
 
 }

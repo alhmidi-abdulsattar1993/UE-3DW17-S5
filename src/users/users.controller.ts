@@ -8,10 +8,21 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post('createuser')
-  createUser(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.createUser(createUserDto);
-  }
+  createUser(
+      @Body('name') name: string,
+      @Body('lastname') lastname: string,
+      @Body('email') email:string,
+      @Body('password') password: string,) {
 
+        const result =this.usersService.createUser(
+            name,
+            lastname,
+            email,
+            password,
+        )
+    return result;
+  }
+/*
   @Get('users')
   findAll() {
     return this.usersService.findAll();
@@ -31,5 +42,5 @@ export class UsersController {
   @Delete('deleteuser')
   remove(@Body('id') id: number) {
     return this.usersService.remove(+id);
-  }
+  }*/
 }
